@@ -4,6 +4,18 @@
 #include <unistd.h>
 
 /**
+ * _putchar - writes the character c to stdout
+ * @c: The character to print
+ *
+ * Return: On success 1
+ * On error, -1 is returned
+ */
+int _putchar(char c)
+{
+	return (write(1, &c, 1));
+}
+
+/**
  * _printf - produces output according to a format
  * @format: format string
  * Description: this function will call the get_print() function that will
@@ -14,38 +26,61 @@
 int _printf(const char *format, ...)
 {
 	va_list args;
+	int i = 0;
 	int count = 0;
 
+	if (format == NULL)
+		return (-1);
+
 	va_start(args, format);
-	while (*format != '\0')
+	while (format[i] != '\0')
 	{
-		if (*format == '%')
+		if (format[i] == '%')
 		{
-			format++;
-			switch (*format)
+			i++;
+			switch (format[i])
 			{
 				case 'c':
-					count += write(1, &args, 1);
+					count += _putchar(va_arg(args, int));
 					break;
 				case 's':
-					count += printf("%s", va_arg(args, char*));
+					count += print_string(va_arg(args, char *));
 					break;
 				case '%':
-					count += putchar('%');
+					count += _putchar('%');
 					break;
 				default:
-					putchar('%');
-					putchar(*format);
-					count += 2;
+					count += _putchar('%');
+					count += _putchar(format[i]);
+					break;
 				}
 		}
 		else
 		{
-			putchar(*format);
-			count++;
+			count += _putchar(format[i]);
 		}
-		format++;
+		i++;
 	}
 	va_end(args);
 	return (count);
+}
+
+/**
+ * print_string - prints a string
+ * @s: the string to print
+ *
+ * Return: the number of characters printed
+ */
+int print_string(char *s)
+{
+	int i = 0;
+
+	if  (s == NULL)
+		s = "(null)";
+	while (s[i] != '\0')
+	{
+		_putchar(s[i]);
+		i++;
+	}
+	return (i);
 }
