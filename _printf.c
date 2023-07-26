@@ -52,13 +52,13 @@ int _printf(const char *format, ...)
 				default:
 					count += _putchar('%');
 					count += _putchar(format[i]);
-					i++;
 					break;
 				}
 		}
 		else
 		{
 			count += _putchar(format[i]);
+			i++;
 		}
 	}
 	va_end(args);
